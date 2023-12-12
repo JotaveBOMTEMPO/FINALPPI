@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="cadastro.css">
+    <title>Login</title>
+</head>
+<body>
+    <h1 class="titulo">LOGIN</h1>
+    <div id="caixa">
+        <form action="/login" method="POST">
+            <label for="userName_log" class="label">Nome de Usuário:</label>
+            <input type="text" id="userName_log" name="userName_log" placeholder="Insira o nome de usuário" required>
+            <br>
+            <label for="userPass_log" class="label">Senha:</label>
+            <input type="password" id="userPass_log" name="userPass_log" placeholder="Insira a senha" required>
+            <br>
+            <button id="loginBttn" type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="cadastro.css">
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1 class="titulo">CADASTRO</h1>
+    <div id="box">
+        <form action="/cadastro" method="POST" novalidate>
+            <label for="u_name" class="label">Nome:</label>
+            <input type="text" id="u_name" name="u_name" placeholder="Insira seu nome completo" required>
+            <br>
+            <label for="username" class="label">Nome de Usuário:</label>
+            <input type="text" id="username" name="username" placeholder="Insira seu nome de usuário" required>
+            <br>
+            <label for="em" class="label">Email:</label>
+            <input type="email" id="em" name="em" placeholder="Insira seu email" required>
+            <br>
+            <label for="senha" class="label">Senha:</label>
+            <input type="password" id="senha" name="senha" placeholder="Insira sua senha" required>
+            <br>
+            <button id="cadastroBTN" type="submit">Cadastrar</button>
+            <p><a href="/login.html">Já tenho cadastro</a></p>
+        </form>
+    </div>
+</body>
+</html>
