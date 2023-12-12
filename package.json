@@ -16,5 +16,8 @@
     "ppi"
   ],
   "author": "João Victor Bomtempo Costa",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
