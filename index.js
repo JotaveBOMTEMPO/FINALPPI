@@ -244,6 +244,7 @@ app.post('/login', (req, res) => {
         <body>
             <h1 class="titulo">Nome de usuário e(ou) senha inválidos</h1>
             <a href="/login.html">Voltar ao Login</a>
+            <a href="/cadastro.html">Cadastre-se</a>
         </body>
         </html>           
         `)
