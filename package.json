@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "Trabalho Final de PPI",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "module",
-    "url": "PPIFINAL"
+    "type": "git",
+    "url": "git+https://github.com/JotaveBOMTEMPO/PPIFINAL.git"
   },
   "keywords": [
     "ppi"
