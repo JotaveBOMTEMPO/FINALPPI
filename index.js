@@ -213,7 +213,7 @@ app.get('/', autentic, (req, res) => {
     <br>
     <p id="user_lastacs">Seu ultimo acesso foi em | ${dataUA} |</p>
     <button id="sendBttn">Enviar</button>
-    <a href="#"><button id="backMenu">Menu</button></a>
+    <a href="cadastro.html"><button id="backMenu">Menu</button></a>
 </form>
 </div>
 </div>
