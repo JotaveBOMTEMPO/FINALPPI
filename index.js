@@ -7,9 +7,10 @@ const port = 3000;
 const host = '0.0.0.0'
 var user_list = [];
 var msg_list = [];
+const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
 
 function user_regist(req, res) {
-
     const data_u = req.body;
     let sys_resp = '';
 
@@ -95,7 +96,7 @@ function user_regist(req, res) {
             Password: data_u.senha,
         }
 
-        user_list.push(USUARIO);
+        req.session.usuario = USUARIO;
 
         sys_resp = `
         <!DOCTYPE html>
@@ -153,77 +154,86 @@ const app = express();
 
 app.use(cookieParser());
 
-app.use(session({ secret: "s3cr3tpsswrd", resave: true, saveUninitialized: true, cookie: { maxAge: 1000 * 60 * 15 } }));
+app.use(session({
+    secret: "s3cr3tpsswrd",
+    resave: true,
+    saveUninitialized: true,
+    store: new MemoryStore(),
+    cookie: { maxAge: 1000 * 60 * 15 }
+}));
 
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(process.cwd(), './paginas')));
 
 app.get('/', autentic, (req, res) => {
-    const dataUA = req.cookies.DataUltimoAcesso;
-    const data = new Date();
-    let sys_resp = '';
+    const usuario = req.session.usuario;
 
-    res.cookie("DataUltimoAcesso", data.toLocaleString(), {
-        maxAge: 1000 * 60 * 60 * 24 * 30,
-        httpOnly: true
-    });
+    if (usuario) {
+        const dataUA = req.cookies.DataUltimoAcesso;
+        const data = new Date();
+        let sys_resp = '';
 
-    sys_resp = `
-    <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="chat.css">
-    <title>Chat</title>
-</head>
-<body>
-    <h1 id="titulochat">CHAT</h1>
-    <div id="ext-chat">
-        <div id="int-chat">
-    `;
+        res.cookie("DataUltimoAcesso", data.toLocaleString(), {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+            httpOnly: true
+        });
 
-    for (const mensagem of msg_list) {
-        sys_resp += `
-                <div class="name1">
-                    ${mensagem.selectedUser}:
-                </div>
-                <div class="name1msg">
-                    ${mensagem.msg} 
-                </div>
-                `;
-    }
-
-    sys_resp += `
-                <div id="chat">
-                    <form action="/mandarMSG" method="POST">
-                        <select id="user_select" name="user_select">
-    `;
-
-    for (const USUARIO of user_list) {
-        sys_resp += `
-                            <option value="${USUARIO.userName}">${USUARIO.userName}</option>
+        sys_resp = `
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" type="text/css" href="chat.css">
+            <title>Chat</title>
+        </head>
+        <body>
+            <h1 id="titulochat">CHAT</h1>
+            <div id="ext-chat">
+                <div id="int-chat">
         `;
+
+        sys_resp += `
+                    <div class="name1">
+                        ${usuario.userName}:
+                    </div>
+                    <div class="name1msg">
+                        Bem-vindo ao chat! 
+                    </div>
+        `;
+
+        sys_resp += `
+                    <div id="chat">
+                        <form action="/mandarMSG" method="POST">
+                            <select id="user_select" name="user_select">
+        `;
+
+        for (const outroUsuario of user_list) {
+            sys_resp += `
+                                <option value="${outroUsuario.userName}">${outroUsuario.userName}</option>
+            `;
+        }
+
+        sys_resp += `
+                            </select>
+                            <input id="msgArea" name="msgArea" type="text">
+                            <br>
+                            <p id="user_lastacs">Seu último acesso foi em | ${dataUA} |</p>
+                            <button id="sendBttn">Enviar</button>
+                            <a href="cadastro.html"><button id="backMenu">Menu</button></a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>                       
+        `;
+
+        res.end(sys_resp);
+    } else {
+        res.redirect("/login.html");
     }
-
-    sys_resp += `
-    </select>
-    <input id="msgArea" name="msgArea" type="text">
-    <br>
-    <p id="user_lastacs">Seu ultimo acesso foi em | ${dataUA} |</p>
-    <button id="sendBttn">Enviar</button>
-    <a href="cadastro.html"><button id="backMenu">Menu</button></a>
-</form>
-</div>
-</div>
-</div>
-</body>
-</html>                       
-    `;
-
-    res.end(sys_resp);
-
 });
 
 app.post('/login', (req, res) => {
