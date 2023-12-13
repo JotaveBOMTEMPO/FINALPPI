@@ -229,7 +229,8 @@ app.get('/', autentic, (req, res) => {
 app.post('/login', (req, res) => {
     const usuario = req.body.userName_log;
     const senha = req.body.userPass_log;
-    if (usuario && senha && (usuario === USUARIO.userName) && (senha === USUARIO.Password)) {
+    const usuarioCadastrado = user_list.find(user => user.userName === usuario && user.Password === senha);
+    if (usuarioCadastrado) {
         req.session.usuAutenticar = true;
         res.redirect("/");
     } else {
