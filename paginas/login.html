@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="cadastro.css">
-    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <title>Cadastro novo usuario</title>
 </head>
+
 <body>
-    <h1 class="titulo">LOGIN</h1>
-    <div id="box">
+    <div id="caixa">
         <form action="/login" method="POST">
-            <label for="userName_log" class="label">Nome de Usuário:</label>
-            <input type="text" id="userName_log" name="userName_log" placeholder="Insira o nome de usuário" required>
+
+            <h3>FAÇA O LOGIN</h3>
+            <label class="rotul" for="usuario">Nome Usuario:</label>
+            <input type="text" id="usuario" name="usuario" placeholder="Insira seu nome de usuario." required>
+            <label class="rotul" for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" placeholder="Insira sua senha." required>
             <br>
-            <label for="userPass_log" class="label">Senha:</label>
-            <input type="password" id="userPass_log" name="userPass_log" placeholder="Insira a senha" required>
-            <br>
-            <button id="loginBttn" type="submit">Entrar</button>
+            <button id="BotCad" type="submit">Login</button>
+
         </form>
     </div>
 </body>
+
 </html>

@@ -1,148 +1,131 @@
 import express from 'express';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-import path from 'path';
 
-const port = 3000;
+const porta = 3000;
 const host = '0.0.0.0';
-var user_list = [];
-var msg_list = [];
+const listaUSU = [];
+const messages = [];
 
-function user_regist(req, res) {
-    const data_u = req.body;
-    let sys_resp = '';
+function processaCadastroUsuario(req, res) {
+    const dados = req.body;
 
-    if (!(data_u.u_name && data_u.username && data_u.em && data_u.senha)) {
-        sys_resp = `
-            <!DOCTYPE html>
-            <html lang="pt-br">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="stylesheet" type="text/css" href="cadastro.css">
-                <title>Cadastro</title>
-            </head>
-            <body>
-                <h1 class="titulo">CADASTRO</h1>
-                <div id="box">
-                    <form action="/cadastro" method="POST" novalidate>
-                        <label for="u_name" class="label">Nome:</label>
-                        <input type="text" id="u_name" name="u_name" placeholder="Insira seu nome completo" required>
-                        <br>
+    let conteudoResposta = '';
+
+    if (!(dados.nome && dados.data && dados.usuario )) {
+        conteudoResposta = `
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" type="text/css" href="formulario.css">
+            <title>Cadastro</title>
+        </head>
+        <body>
+            <div id="caixa">
+                <form action="/formulario.html" method="POST">
+        
+                    <h3>CADASTRO</h3>
+                    <label class="rotul" for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Insira seu nome." value="${dados.nome}" required>
         `;
-
-        if (!data_u.u_name) {
-            sys_resp += `
-                        <text class="rockDanger">O campo "Nome" é obrigatório!</text>
-                        <br>
+        if (!dados.nome) {
+            conteudoResposta += `
+                    <p class="rockDanger">O campo Nome é obrigatório</p>
             `;
         }
 
-        sys_resp += `
-                        <label for="username" class="label">Nome de Usuário:</label>
-                        <input type="text" id="username" name="username" placeholder="Insira seu nome de usuário" required>
-                        <br>
+        conteudoResposta += `
+                    <label class="rotul" for="data">Data de nascimento:</label>
+                        <input type="text" id="data" name="data" placeholder="Insira seu aniversario." value="${dados.data}" required>
         `;
-
-        if (!data_u.username) {
-            sys_resp += `
-                        <text class="rockDanger">O campo "Nome de Usuário" é obrigatório!</text>
-                        <br>
+        if (!dados.data) {
+            conteudoResposta += `
+                    <p class="rockDanger">O campo data é obrigatório</p>
             `;
         }
-
-        sys_resp += `
-                        <label for="em" class="label">Email:</label>
-                        <input type="email" id="em" name="em" placeholder="Insira seu email" required>
-                        <br>
-        `;
-
-        if (!data_u.em) {
-            sys_resp += `
-                        <text class="rockDanger">O campo "Email" é obrigatório!</text>
-                        <br>
+        
+        conteudoResposta += `
+                    <label class="rotul" for="usuario">Nickname ou Usuario:</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Insira seu nome de usuário." value="${dados.usuario}" required>
+        `;   
+        if (!dados.usuario) {
+            conteudoResposta += `
+                    <p class="rockDanger">O campo Nome de Usuário é obrigatório</p>
             `;
         }
-
-        sys_resp += `
-                        <label for="senha" class="label">Senha:</label>
-                        <input type="password" id="senha" name="senha" placeholder="Insira sua senha" required>
-                        <br>
+        
+        conteudoResposta += `
+                    <br>
+                    <button id="BotCad" type="submit">Cadastrar</button>
+    
+                </form>
+            </div>
+        </body>
+        </html>
         `;
+        
+        return res.end(conteudoResposta);
 
-        if (!data_u.senha) {
-            sys_resp += `
-                        <text class="rockDanger">O campo "Senha" é obrigatório!</text>
-                        <br>
-            `;
-        }
-
-        sys_resp += ` 
-                        <button id="BotconfirmCad" type="submit">Cadastrar</button>
-                        <p><a href="/login.html">Já tenho cadastro</a></p>
-                    </form>
-                </div>
-            </body>
-            </html>
-        `;
-
-        res.end(sys_resp);
     } else {
-        const USUARIO = {
-            Name: data_u.u_name,
-            userName: data_u.username,
-            Email: data_u.em,
-            Password: data_u.senha,
-        };
-
-        user_list.push(USUARIO);
-
-        sys_resp = `
-            <!DOCTYPE html>
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-                <title>Tabela de Cadastros</title>
-            </head>
-            <body>
-                <h1>Usuários Cadastrados</h1>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Nome Completo</th>
-                            <th>Nome de Usuário</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-
-        for (const USUARIO of user_list) {
-            sys_resp += `
-                        <tr>
-                            <td>${USUARIO.Name}</td>
-                            <td>${USUARIO.userName}</td>
-                            <td>${USUARIO.Email}</td>
-                        </tr>
-            `;
+        const usu = {
+            nome: dados.nome,
+            data: dados.data,
+            usuario: dados.usuario,
         }
 
-        sys_resp += `
-                    </tbody>
-                </table>
-                <a class="btn btn-primary" href="/" role="button">Voltar ao Menu</a>
-                <a class="btn btn-outline-info" href="/cadastro.html" role="button">Acessar Cadastro</a>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
+        listaUSU.push(usu);
+
+        conteudoResposta = `
+        <!DOCTYPE html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cadastro de Usuário</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        </head>
+        <body>
+            <h1>Usuários Cadastrados</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data de aniversario</th>
+                        <th>Nome de Usuário</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+        
+        for (const usu of listaUSU) {
+            conteudoResposta += `
+                <tr>
+                    <td>${usu.nome}</td>
+                    <td>${usu.data}</td>
+                    <td>${usu.usuario}</td>
+                </tr>
+                    `;
+        }
+
+        conteudoResposta += `
+                </tbody>
+            </table>
+            <a class="btn btn-primary" href="/" role="button">Voltar ao Menu</a>
+            <a class="btn btn-outline-info" href="/formulario.html" role="button">Acessar Cadastro</a>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
             </body>
             </html>
-        `;
-        res.end(sys_resp);
+                `;
+
+        return res.end(conteudoResposta);
+
     }
 }
 
-function autentic(req, res, next) {
-    if (req.session.usuAutenticar) {
+
+function autenticar(req, res, next) {
+    if (req.session.usuarioAutenticado) {
         next();
     } else {
         res.redirect("/login.html");
@@ -150,123 +133,108 @@ function autentic(req, res, next) {
 }
 
 const app = express();
-
 app.use(cookieParser());
 
-app.use(session({ secret: "s3cr3tpsswrd", resave: true, saveUninitialized: true, cookie: { maxAge: 1000 * 60 * 15 } }));
+app.use(session({
+    secret: "Minh4Chav3S3cr3T4",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 30,
+    }
+}))
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(process.cwd(), './paginas')));
+app.use(express.static(path.join(process.cwd(), './PaginasHTML')));
 
-app.get('/', autentic, (req, res) => {
-    const dataUA = req.cookies.DataUltimoAcesso;
+app.get('/', autenticar, (req, res) => {
+    const dataUltimoAcesso = req.cookies.DataUltimoAcesso;
     const data = new Date();
-    let sys_resp = '';
-
     res.cookie("DataUltimoAcesso", data.toLocaleString(), {
         maxAge: 1000 * 60 * 60 * 24 * 30,
-        httpOnly: true
+        httpOnly: true    
     });
-
-    sys_resp = `
+    return res.end(`
         <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" type="text/css" href="chat.css">
-            <title>Chat</title>
-        </head>
-        <body>
-            <h1 id="titulochat">CHAT</h1>
-            <div id="ext-chat">
-                <div id="int-chat">
-    `;
-
-    for (const mensagem of msg_list) {
-        sys_resp += `
-                        <div class="name1">
-                            ${mensagem.selectedUser}:
-                        </div>
-                        <div class="name1msg">
-                            ${mensagem.msg} 
-                        </div>
-        `;
-    }
-
-    sys_resp += `
-                    <div id="chat">
-                        <form action="/mandarMSG" method="POST">
-                            <select id="user_select" name="user_select">
-    `;
-
-    for (const USUARIO of user_list) {
-        sys_resp += `
-                                <option value="${USUARIO.userName}">${USUARIO.userName}</option>
-        `;
-    }
-
-    sys_resp += `
-                            </select>
-                            <input id="msgArea" name="msgArea" type="text">
-                            <br>
-                            <p id="user_lastacs">Seu ultimo acesso foi em | ${dataUA} |</p>
-                            <button id="sendBttn">Enviar</button>
-                            <a href="cadastro.html"><button id="backMenu">Menu</button></a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </body>
-        </html>
-    `;
-
-    res.end(sys_resp);
-});
-
-app.post('/login', (req, res) => {
-    const usuario = req.body.USUARIO.userName;
-    const senha = req.body.USUARIO.Password;
-    if (usuario && senha && (usuario === 'João') && (senha === '2302')) {
-        req.session.usuAutenticar = true;
-        res.redirect("/");
-    } else {
-        res.end(`
-            <!DOCTYPE html>
             <head>
-                <meta charset="UTF-8">
+                <meta charset="UTF-8>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="stylesheet" type="text/css" href="cadastro.css">
-                <title>erro</title>
+                <link rel="stylesheet" type="text/css" href="menu.css">
+                <title>Menu do sistema</title>
+                
             </head>
             <body>
-                <h1 class="titulo">Nome de usuário e(ou) senha inválidos</h1>
-                <a href="/login.html">Voltar ao Login</a>
-                <a href="/cadastro.html">Cadastre-se</a>
+                <h1>Menu</h1>
+                <a href="/formulario.html">Cadastro de Novo Usuario</a>
+                <a href="/batepapo.html">Acesso ao bate papo</a>
             </body>
-            </html>           
-        `);
+            <footer>
+                <p>Ultimo Acesso: ${dataUltimoAcesso}</p>
+            </footer>
+        </html>        
+    `)
+});
+
+app.get('/formulario.html', autenticar, (req, res) => {
+    res.sendFile(path.join(process.cwd(), './PaginasHTML/formulario.html'));
+});
+
+app.post('/formulario.html', autenticar, processaCadastroUsuario);
+
+app.post('/login', (req, res) => {
+    const usuario = req.body.usuario;
+    const senha = req.body.senha;
+
+    console.log("Usuario:", usuario, "Senha:", senha); 
+
+    if (usuario && senha && usuario === 'Joao' && senha === '2302') {
+        req.session.usuarioAutenticado = true;
+        res.redirect('/');
+    } else {
+        console.log("Login falhou. Usuário ou senha incorretos."); 
+        res.end(`
+            <!DOCTYPE html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Falha no login</title>
+                    <link rel="stylesheet" type="text/css" href="errologin.css">
+                </head>
+                <body>
+                    <h1>Usuario ou senha invalidos</h1>
+                    <a href="/login.html">Voltar ao login</a>
+                </body> 
+        `)
     }
 });
 
-app.get('/logout', (req, res) => {
-    req.session.usuAutenticar = false;
-    res.redirect('/login.html');
+app.get('/get-usuarios', (req, res) => {
+    res.json({ usuarios: listaUSU });
 });
 
-app.post('/cadastro', autentic, user_regist);
+function getCurrentTimestamp() {
+    return new Date().toLocaleString();
+}
 
-app.post('/mandarMSG', autentic, (req, res) => {
-    const selectedUser = req.body.selUSU;
-    const msg = req.body.msgArea;
-    const horario = new Date().toLocaleString();
+app.post('/enviar-mensagem', autenticar, (req, res) => {
+    const usuario = req.body.usuario;
+    const mensagem = req.body.mensagem;
 
-    msg_list.push({ selectedUser, msg, horario });
-
-    res.redirect('/');
+    if (usuario && mensagem) {
+        const timestamp = getCurrentTimestamp();
+        const novaMensagem = { usuario, mensagem, timestamp };
+        messages.push(novaMensagem);
+        res.status(200).json({ success: true });
+    } else {
+        res.status(400).json({ success: false, error: 'Usuário e mensagem são obrigatórios.' });
+    }
 });
 
-app.listen(port, host, () => {
-    console.log(`Servidor operando na URL | http://${host}:${port} |`);
+app.get('/get-mensagens', autenticar, (req, res) => {
+    res.json(messages);
+});
+
+
+app.listen(porta, host, () => {
+    console.log(`Servidor rodando na url http://localhost:3000`);
 });

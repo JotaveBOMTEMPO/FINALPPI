@@ -1,104 +1,52 @@
 body {
-    margin: 0;
-    background: linear-gradient(to bottom, #87CEEB, #800080);
-    height: 100vh;
-    color: #ffffff;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
-#titulochat {
+#caixa {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
     text-align: center;
-    font-weight: bold;
-    font-style: italic;
+    margin: 50px auto;
 }
 
-#ext-chat {
-    width: 90%;
-    max-width: 800px;
-    margin: auto;
-    background-color: #7e7b7b;
-    color: #F8F7F3;
-    border-radius: 15px;
-    border: 3px solid #555;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-#int-chat {
-    height: 400px;
-    background-color: rgb(153, 153, 153);
-    color: black;
-    border-radius: 15px;
-    border: 3px solid #555;
-    overflow-y: scroll;
-    padding: 20px;
-}
-
-.name1 {
-    white-space: nowrap;
-    text-align: right;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.name1msg {
-    color: black;
-    background-color: #D0FCB3;
-    text-align: left;
-    padding: 20px;
-    max-width: 70%;
-    word-wrap: break-word;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-}
-
-#chat {
-    position: relative;
+form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
 }
 
-#user_select,
-#msgArea,
-#sendBttn,
-#backMenu {
-    border-radius: 10px;
-    outline: none;
+h3 {
+    color: #333;
 }
 
-#user_select,
-#msgArea {
-    width: 70%;
-    border: 3px solid #888;
-    padding: 15px;
+.rotul {
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
     margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-#user_select:focus,
-#msgArea:focus {
-    border: 3px solid #555;
-}
-
-#sendBttn,
-#backMenu {
-    width: 150px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    padding: 15px;
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 15px;
 }
 
-#backMenu {
-    background-color: #2196F3;
-}
-
-#sendBttn:hover,
-#backMenu:hover {
-    outline: none;
-    border: 3px solid #555;
+button:hover {
+    background-color: #45a049;
 }
