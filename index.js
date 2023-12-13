@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import path from 'path';
 
-const port = 3000;
+const port = 3001;
 const host = '0.0.0.0'
 var user_list = [];
 var msg_list = [];
