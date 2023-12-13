@@ -188,7 +188,7 @@ app.post('/login', (req, res) => {
 
     console.log("Usuario:", usuario, "Senha:", senha); 
 
-    if (usuario && senha && usuario === 'Joao' && senha === '2302') {
+    if (usuario && senha && usuario === 'Gustavo' && senha === '123') {
         req.session.usuarioAutenticado = true;
         res.redirect('/');
     } else {
