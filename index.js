@@ -7,7 +7,6 @@ const port = 3000;
 const host = '0.0.0.0'
 var user_list = [];
 var msg_list = [];
-const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 
 function user_regist(req, res) {
