@@ -6,80 +6,99 @@ body {
     font-family: Arial, sans-serif;
 }
 
-#box {
-    width: 450px;
-    background-color: #7e7b7b;
+#titulochat {
     text-align: center;
-    justify-content: center;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#ext-chat {
+    width: 90%;
+    max-width: 800px;
     margin: auto;
-    margin-top: 20vh;
-    display: block;
+    background-color: #7e7b7b;
     color: #F8F7F3;
-    align-items: center;
-    border-radius: 5px;
-    border: 3px outset rgb(165, 164, 164);
+    border-radius: 15px;
+    border: 3px solid #555;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#int-chat {
+    height: 400px;
+    background-color: rgb(153, 153, 153);
+    color: black;
+    border-radius: 15px;
+    border: 3px solid #555;
+    overflow-y: scroll;
     padding: 20px;
 }
 
-#loginBttn,
-#cadastroBTN {
-    border-radius: 5px;
-    color: #F8F7F3;
-    height: 30px;
+.name1 {
+    white-space: nowrap;
+    text-align: right;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.name1msg {
+    color: black;
+    background-color: #D0FCB3;
+    text-align: left;
+    padding: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+#chat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#user_select,
+#msgArea,
+#sendBttn,
+#backMenu {
+    border-radius: 10px;
+    outline: none;
+}
+
+#user_select,
+#msgArea {
+    width: 70%;
+    border: 3px solid #888;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+#user_select:focus,
+#msgArea:focus {
+    border: 3px solid #555;
+}
+
+#sendBttn,
+#backMenu {
     width: 150px;
-    font-style: italic;
-    font-weight: bold;
-}
-
-#loginBttn {
-    border: 2px solid rgb(1, 95, 1);
-    background-color: rgb(1, 160, 1);
-}
-
-#loginBttn:hover {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 15px;
     cursor: pointer;
-    background-color: rgb(0, 120, 0);
-    border: 2px solid rgb(0, 90, 0);
+    margin-bottom: 15px;
 }
 
-#cadastroBTN {
-    background-color: rgb(1, 200, 1);
-    border: 2px solid rgb(2, 130, 1);
+#backMenu {
+    background-color: #2196F3;
 }
 
-#cadastroBTN:hover {
-    cursor: pointer;
-    background-color: rgb(0, 100, 0);
-    border: 2px solid rgb(0, 80, 0);
-}
-
-.label {
-    font-weight: bold;
-    text-align: center;
-    opacity: 1;
-    display: block;
-    margin-bottom: 10px; 
-}
-
-.titulo {
-    text-align: center;
-    font-weight: bold;
-    font-style: italic;
-    margin-bottom: 20px; 
-}
-
-.rockDanger {
-    color: red;
-    text-align: center;
-    font-style: italic;
-    margin-top: 10px; 
-}
-
-input {
-    border-radius: 5px;
-    width: 300px;
-    height: 30px; 
-    opacity: 1;
-    border: 2px solid black;
-    margin-bottom: 15px; 
+#sendBttn:hover,
+#backMenu:hover {
+    outline: none;
+    border: 3px solid #555;
 }
